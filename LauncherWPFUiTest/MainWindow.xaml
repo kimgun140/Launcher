@@ -1,0 +1,168 @@
+﻿<Window x:Class="LauncherWPFUiTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LauncherWPFUiTest"
+        xmlns:vm="clr-namespace:LauncherWPFUiTest.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="562.5"
+        Width="1000"
+        Background="Transparent"
+        
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <!-- 부드러운 애니메이션을 위한 EasingFunction -->
+        <QuadraticEase x:Key="EaseOut"
+                       EasingMode="EaseOut" />
+    </Window.Resources>
+
+    <Grid>
+        <Border>
+            <Border.Background>
+                <SolidColorBrush Color="#15171E" />
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Column="0"
+                      Grid.ColumnSpan="2">
+                    <Border Background="#24262B"
+                            Margin="10 "
+                            CornerRadius="10"
+                            Height=" 80"
+                            Width="700"
+                            HorizontalAlignment="Left">
+
+                        <StackPanel Orientation="Horizontal"
+                                    Height="80">
+
+                            <Button Style="{StaticResource menuButton}">
+                                <Image Source="images/icon1.png"
+                                       Height="60"
+                                       Width="60" />
+                            </Button>
+                            <Button Style="{StaticResource menuButton}">
+                                <Image Source="images/s2icon.png"
+                                       Height="60"
+                                       Width="60" />
+                            </Button>
+                            <Button Style="{StaticResource menuButton}">
+                                <Image Source="images/wowicon.png"
+                                       Height="60"
+                                       Width="60" />
+                            </Button>
+                            <Button Style="{StaticResource menuButton}">
+                                <Image Source="images/diaicon.png" />
+                            </Button>
+                            <Button Style="{StaticResource menuButton}">
+                                <Image Source="images/watchicon.png"
+                                       Height="60"
+                                       Width="55"
+                                       Margin="0 0 0 5" />
+                            </Button>
+                        </StackPanel>
+
+                    </Border>
+                    <Button HorizontalAlignment="Right"
+                            Style="{StaticResource menuButton}"
+                            Width="100"
+                            >
+                        <Grid  >
+                            <Ellipse Fill="#282B32" 
+                                Width="50"
+                                      Height="48" />
+                            <Image Source="/images/usericon2.png"
+                                   Width="90"
+                                   Height="60">
+                                <Image.Clip>
+                                    <EllipseGeometry Center="20,25"
+                                                     RadiusX="90"
+                                                     RadiusY="90" />
+                                </Image.Clip>
+                                
+                            </Image>
+                        </Grid>
+                    </Button>
+                </Grid>
+                <DockPanel Grid.Row="1"
+                           Grid.Column="0"
+                           Background="Transparent"
+                           Width="200"
+                           HorizontalAlignment="Left"
+                           
+                           
+                           >
+                    <Image DockPanel.Dock="Top"
+                           Margin="5 10 0 0"
+                           Source="Images/logologo.png"></Image>
+                    <Button Style="{StaticResource BtnContent}"
+                            Content="스타크래프트 샵"
+                       />
+                    <Button Style="{StaticResource BtnContent}"
+                            Content="토론장"
+                        />
+                    <Button  Style="{StaticResource BtnContent}"
+                            Content="패치노트"
+                            />
+                    
+                    <Button DockPanel.Dock="Bottom"
+                            Height="60"
+                            VerticalAlignment="Bottom"
+                            Margin="10"
+                            Background="#0074E0"
+                            Foreground="White"
+                            Content="설치"
+                            Style="{StaticResource startbtn}">
+                    </Button>
+
+                    <ComboBox  DockPanel.Dock="Bottom"
+                               Height="30"
+                               VerticalAlignment="Bottom"
+                               Margin="10 10 10 0"
+                               FontFamily="pack://application:,,,/Font/NanumGothic.ttf"
+                               >
+                  
+                    </ComboBox>
+                </DockPanel>
+                <ListBox Grid.Row="1"
+                         HorizontalAlignment="Right"
+                         Background="Transparent"
+                         ItemsSource="{Binding Items}"
+                         Width="600"
+                         Margin="10"
+                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                         >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid  Width="600">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Image Source="{Binding ImagePath}"
+                                       Grid.Row="0"
+                                       Width="600"
+                                       Height="500"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"></Image>
+                                <TextBlock Text="{Binding Text}"
+                                           Grid.Row="1"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+        </Border>
+    </Grid>
+</Window>
