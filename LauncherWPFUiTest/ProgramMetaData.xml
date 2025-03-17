@@ -1,18 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+
 <Program>
-	<Program>
-		<Name>Program1</Name>
-		<Path>C:\Users\kimgu\OneDrive\바탕 화면\런처</Path>
-		<Version>V1.01</Version>
-	</Program>
-	<Program>
-		<Name>Program1</Name>
-		<Path>C:\Users\kimgu\OneDrive\바탕 화면\런처</Path>
-		<Version>V1.02</Version>
-	</Program>
-	<Program>
-		<Name>Program1</Name>
-		<Path>C:\Users\kimgu\OneDrive\바탕 화면\런처</Path>
-		<Version>V1.03</Version>
-	</Program>
+	<Name>ProgramA</Name>
+	<Path>C:\Users\kimgu\OneDrive\바탕 화면\프로그램들\ProgramA\V1.0</Path>
+	<Version>V1.0</Version>
+	<PatchNote>V1.0 패치내역</PatchNote>
 </Program>
+
