@@ -35,10 +35,28 @@ namespace LauncherWPFUiTest.ViewModel
             set
             {
                 _flag = value;
+                if (_flag)
+                {
+                    _buttonContent = "설치";
+                }
+                else
+                {
+                    _buttonContent = "실행";
+                }
                 OnPropertyChanged(nameof(Flag));
             }
         }
+        public string _buttonContent;
 
+        public string ButtonContent
+        {
+            get => _buttonContent;
+            set
+            {
+                _buttonContent = value;
+                OnPropertyChanged(nameof(ButtonContent));
+            }
+        }
 
         private Program _selectedProgram;
         public Program SelectedProgram
@@ -77,7 +95,7 @@ namespace LauncherWPFUiTest.ViewModel
         public ICommand SelectProgramCommand { get; }
 
 
-        //public ICommand FileCopyCommand { get; }
+        public ICommand InstallOrRunCommand { get; }
 
         public MainViewModel()
         {
@@ -98,7 +116,6 @@ namespace LauncherWPFUiTest.ViewModel
         private void LoadPrograms()
         //서비스로 옮겨줘야함 
         {
-
 
 
             if (!File.Exists(XmlFilePath))
@@ -153,8 +170,8 @@ namespace LauncherWPFUiTest.ViewModel
         }
         private void LaunchSelectedVersion()
         {
-         
-            
+
+
             if (SelectedVersion == null)
                 return;
 
@@ -163,12 +180,13 @@ namespace LauncherWPFUiTest.ViewModel
             string exePath;
             bool? result = dialog.ShowDialog();
             string lastFolder = Path.GetFileName(SelectedVersion.Path);
-            
-            if (result == true) {
 
-                 exePath = dialog.FolderName;
+            if (result == true)
+            {
 
-                string[] Paths = new string[] { SelectedVersion.Path, exePath+ $"\\{lastFolder}" };
+                exePath = dialog.FolderName;
+
+                string[] Paths = new string[] { SelectedVersion.Path, exePath + $"\\{lastFolder}" };
                 DirectoryInfo di = new DirectoryInfo(Paths[1]);
                 //경로에 이미 디렉토리가 있으면 
                 if (di.Exists)
