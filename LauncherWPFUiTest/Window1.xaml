@@ -22,11 +22,12 @@
                     Command="{Binding LoadFilesCommand}" />
         </StackPanel>
 
-      <!--목록-->
+        <!--목록-->
 
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
-                    Height="80"  HorizontalAlignment="Center"/>
+                    Height="80"
+                    HorizontalAlignment="Center" />
         <ItemsControl ItemsSource="{Binding Programs}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -35,19 +36,19 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Style="{StaticResource menuButton}" Click="Button_Click">
+                    <Button Style="{StaticResource menuButton}"
+                            Command="{Binding DataContext.SelectProgramCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}">
                         <StackPanel Orientation="Vertical">
                             <Image Source="{Binding IconSource}"
                                    Height="60"
                                    Width="60"
                                    Margin="5" />
-                            <TextBlock Text="{Binding ProgramName}" 
-                                       HorizontalAlignment="Center"
-                                       FontSize="12"
-                                       />
+                            <TextBlock Text="{Binding ProgramName}"
+                                       FontSize="12" />
                         </StackPanel>
                     </Button>
-                    
+
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -55,7 +56,18 @@
                   DisplayMemberPath="Number"
                   SelectedItem="{Binding SelectedVersion}"
                   Height="20"
-                  Width="100"/>
+                  Width="100" />
+        <TextBlock Text="패치내역"
+                   Margin="10"
+                   Width="100"
+                   HorizontalAlignment="Right" />
+        <TextBlock Grid.Row="1"
+                 Text="{Binding PatchNote}"
+                 Height="100"
+                 Width="300" />
+
+        <Button Grid.Row="1" Height="100" Width="100" HorizontalAlignment="Left"
+                Command="{Binding LaunchProgramCommand}"></Button>
     </Grid>
-    
+
 </Window>
