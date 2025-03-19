@@ -13,13 +13,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+
+        </Grid.ColumnDefinitions>
 
         <!-- XML 파일에서 프로그램 목록을 읽어옴 -->
         <StackPanel Orientation="Horizontal"
                     Margin="10">
-            <Button Content="Load Programs"
-                    Command="{Binding LoadFilesCommand}" />
+           
         </StackPanel>
 
         <!--목록-->
@@ -28,6 +35,7 @@
                     Orientation="Horizontal"
                     Height="80"
                     HorizontalAlignment="Center" />
+        
         <ItemsControl ItemsSource="{Binding Programs}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -57,17 +65,36 @@
                   SelectedItem="{Binding SelectedVersion}"
                   Height="20"
                   Width="100" />
-        <TextBlock Text="패치내역"
-                   Margin="10"
-                   Width="100"
-                   HorizontalAlignment="Right" />
+        <Button Content="삭제"
+                Command="{Binding DeleteProgramCommand}"
+                IsEnabled="{Binding Flag}"
+                Width="50" Height="50"
+                HorizontalAlignment="Right"
+                />
         <TextBlock Grid.Row="1"
                  Text="{Binding PatchNote}"
                  Height="100"
                  Width="300" />
 
         <Button Grid.Row="1" Height="100" Width="100" HorizontalAlignment="Left"
-                Command="{Binding LaunchProgramCommand}"></Button>
+                Command="{Binding LaunchProgramCommand}"
+                Content="{Binding ButtonContent}"
+               
+                
+                ></Button>
+        <ProgressBar x:Name="progressBar"
+                     Grid.Column="1"
+                     Grid.Row="1"
+                     Value="{Binding ProgressBarValue}"/>
+        <TextBlock Grid.Column="2"
+                   Grid.Row="2"
+                   FontSize="25"
+                   Text="{Binding LoadDataValue}"
+                   />
+        <TextBlock Grid.Row="2"
+                   FontSize="25"
+                   
+                   Text="{Binding LoadDataMax}" />
     </Grid>
 
 </Window>

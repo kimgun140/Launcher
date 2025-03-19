@@ -21,7 +21,12 @@ namespace LauncherWPFUiTest
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ItemViewModel();
+            //DataContext = new ItemViewModel();
+            DataContext = new MainViewModel();
+            fileCopyManager.Connection();
+
         }
+        FileCopyManager fileCopyManager = new FileCopyManager();
+
     }
 }

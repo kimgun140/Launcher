@@ -29,22 +29,6 @@ namespace LauncherWPFUiTest
         }
         FileCopyManager fileCopyManager = new FileCopyManager();
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // 이버튼에 바인딩하면 되는거고 
 
-            //FileCopyManager.CopyProgramFiles(@"C:\Users\kimgu\OneDrive\바탕 화면\프로그램들\ProgramA\V1.0");
-            string uncpath = @"\\gms-mcc-nas01\AUDIO-FILE\test1";
-            string[] strings = new string[2];
-            strings[0] = uncpath;
-            strings[1] = "설치할 위치";
-            //어디서 받지 
-            fileCopyManager.CopyProgramFiles(strings);
-
-
-            // CopyProgramFiles(원본경로, 복사할경로 ) 
-
-
-        }
     }
 }

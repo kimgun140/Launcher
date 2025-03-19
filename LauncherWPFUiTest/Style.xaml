@@ -80,6 +80,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="Button"
+           x:Key="DeleteButton">
+        <Setter Property="Visibility"
+                Value="Collapsed" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsVisible}"
+                         Value="True">
+                <Setter Property="Visibility"
+                        Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+
+    </Style>
     <!--<Style TargetType="Border"
            x:Key="menuButtonBorder">
         <Setter  Property="BorderBrush"
@@ -129,8 +143,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter Content="설치"
-                                          VerticalAlignment="Center"
+                        <ContentPresenter VerticalAlignment="Center"
                                           HorizontalAlignment="Center" />
 
                     </Border>
