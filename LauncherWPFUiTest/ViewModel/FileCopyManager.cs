@@ -46,12 +46,16 @@ namespace LauncherWPFUiTest.ViewModel
         //public string username = "develop";
         //public string password = "Akds0ft3!48";
 
-        private string XmlFilePath = @"\\Gms-mcc-nas01\audio-file\test1\ProgramsPath.xml";
-        //프로그램들 보관경로 
+        public const string XmlFilePath = @"C:\Program Files\launcherfolder\ProgramsPath.xml";
+        //런처 폴더 경로
 
-        //설치 루트폴더 경로 
-        private string installedPath = @"C:\Program Files\launcherfolder";
+        // 프로그램 설치 폴더 경로 
+        public const string installedPath = @"C:\Program Files\LauncherPrograms";
+
+        //public string XmlFilePaths = Path.Combine(XmlFilePath, "ProgramsPath.xml");
+
         LauncherConfig launcherConfig;
+
 
 
 
@@ -108,14 +112,14 @@ namespace LauncherWPFUiTest.ViewModel
 
                 // : UI 업데이트를 위해 `Programs` 리스트에 추가
                 programs.Add(programData);
-                //이걸 다 옮겨야한다는거지 서비스로 
-
-
 
             }
+            // 프로그램 데이터 
             return programs;
 
         }
+
+
 
         public void Connection()
         {
@@ -157,183 +161,129 @@ namespace LauncherWPFUiTest.ViewModel
                 MessageBox.Show(result.ToString());
             }
         }
-        public void OptionBackup()
+        public void OptionBackup(string programFolder, string versionPath)
         {
+            // 설정 파일 이름
+            const string file = "ProgramSettings.xml";
 
+            // 설치된 프로그램 경로 가져오기
+            string installPath = GetInstallPath(programFolder, versionPath);
 
-        }
-        public void Log(string str)
-        {
-            // 현재 위치 경로 
-            string currentDirectoryPath = Environment.CurrentDirectory.ToString();
+            // 원본 설정 파일 경로
+            string sourceFilePath = Path.Combine(installPath, file);
 
-            string DirPath = System.IO.Path.Combine(currentDirectoryPath, "Logs");
+            // ❗ 백업 폴더는 ProgramA 폴더 안에 위치해야 함
+            string programRootPath = Path.GetDirectoryName(installPath); // ProgramA 폴더 경로
+            string backupFolder = Path.Combine(programRootPath, "백업폴더");
+            Directory.CreateDirectory(backupFolder); // 폴더가 없으면 생성
 
-            string FilePath = DirPath + @"\Log_" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+            // ❗ 버전명을 포함한 백업 파일명 생성
+            string versionFolderName = Path.GetFileName(versionPath); // 예: V1.0
+            string backupFileName = $"ProgramSettings_{versionFolderName}.xml";
+            string backupFilePath = Path.Combine(backupFolder, backupFileName);
 
-            if (!Directory.Exists(DirPath))
+            // 파일 복사
+            using (FileStream sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream destinationStream = new FileStream(backupFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                Directory.CreateDirectory(DirPath);
-            }
-            string error = DateTime.Now.ToString() + " : " + str + Environment.NewLine;
-            File.AppendAllText(FilePath, error);
-
-
-        }
-
-
-        public void CopyProgramFiles(string[] Paths)
-        // 원본 폴더 경로 
-        {
-
-            string sourcePath = Paths[0];
-            string destinationDir = Paths[1];
-
-            if (string.IsNullOrEmpty(sourcePath) || !Directory.Exists(sourcePath))
-            {
-                //원본이 존재하지않을때 
-                MessageBox.Show("원본이 존재하지 않습니다.");
-                return;
-
-            }
-            //sourcePath 폴더의 파일들을 복사해서 basicPath에 붙여넣기
-            // 폴더 경로 
-
-
-            //string basicPath = @"C:\Users\kimgu\OneDrive\바탕 화면\LauncherPrograms\v1";
-
-            //설치할경로에 폴더이름 
-            //string destinationDir = @"C:\Users\kimgu\OneDrive\바탕 화면\LauncherPrograms\v1";
-
-
-            CopyDirectory(sourcePath, destinationDir);
-
-
-        }
-
-
-        private static async void CopyDirectory(string sourceDir, string destinationDir)
-        {
-
-            Directory.CreateDirectory(destinationDir);
-            //폴더 만들기 폴더가 있어서
-
-            foreach (string file in Directory.GetFiles(sourceDir))
-            // files가 몇개인지를 전달하면 되겠다. 
-            //플더안 파일 이름 가져오기 
-            {
-                string dest = Path.Combine(destinationDir, Path.GetFileName(file));
-
-                using (FileStream sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-                using (FileStream destinationStream = new FileStream(dest, FileMode.Create, FileAccess.Write, FileShare.None))
+                byte[] bytes = new byte[32768];
+                int bytesRead;
+                while ((bytesRead = sourceStream.Read(bytes, 0, bytes.Length)) > 0)
                 {
-                    try
-                    {
-                        byte[] bytes = new byte[32768];
-                        int bytesRead;
-
-                        while ((bytesRead = await sourceStream.ReadAsync(bytes, 0, bytes.Length)) > 0)
-                        {
-                            await destinationStream.WriteAsync(bytes, 0, bytesRead);
-                        }
-                    }
-                    catch (IOException)
-                    {
-                        MessageBox.Show("복사 실패");
-                    }
+                    destinationStream.Write(bytes, 0, bytesRead);
                 }
             }
 
-            foreach (string dir in Directory.GetDirectories(sourceDir))
-            {
-                string destDir = Path.Combine(destinationDir, Path.GetFileName(dir));
-                CopyDirectory(dir, destDir);
-            }
+            MessageBox.Show($"백업 완료: {backupFilePath}");
         }
+
+
+        public void Log(string str)
+        {
+            //// 현재 위치 경로 
+            //string currentDirectoryPath = Environment.CurrentDirectory.ToString();
+
+            //string DirPath = System.IO.Path.Combine(currentDirectoryPath, "Logs");
+
+            //string FilePath = DirPath + @"\Log_" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+
+            //if (!Directory.Exists(DirPath))
+            //{
+            //    Directory.CreateDirectory(DirPath);
+            //}
+            //string error = DateTime.Now.ToString() + " : " + str + Environment.NewLine;
+            //File.AppendAllText(FilePath, error);
+
+
+        }
+        public string GetInstallPath(string programFolder, string versionPath)
+        // 경로만들기 
+        {
+            string versionFolderName = Path.GetFileName(versionPath);
+            string programFolderName = Path.GetFileName(programFolder);
+
+            return Path.Combine(installedPath, programFolderName, versionFolderName);
+        }
+
+        public bool IsProgramInstalled(string programFolder, string versionPath)
+        //설치확인
+        {
+            string installPath = GetInstallPath(programFolder, versionPath);
+            return Directory.Exists(installPath);
+        }
+
+
         public async void deleteDirectory(string InstalledDir)
         {
-
+            
             //Task task = new Task(() => deleteDirectory(InstalledDir));
-
-            if (string.IsNullOrEmpty(InstalledDir) || !Directory.Exists(InstalledDir))
+            try
             {
-                MessageBox.Show("삭제할 폴더가 존재하지 않습니다.");
-                return;
+                if (string.IsNullOrEmpty(InstalledDir) || !Directory.Exists(InstalledDir))
+                {
+                    MessageBox.Show("삭제할 폴더가 존재하지 않습니다.");
+                    return;
+                }
+                foreach (string file in Directory.GetFiles(InstalledDir))
+                {
+                    File.Delete(file);
+                }
+                foreach (string dir in Directory.GetDirectories(InstalledDir))
+                {
+                    deleteDirectory(dir);
+                }
+                Directory.Delete(InstalledDir);
             }
-            foreach (string file in Directory.GetFiles(InstalledDir))
+            catch (Exception e)
             {
-                File.Delete(file);
+                MessageBox.Show("삭제 실패");
+                //Log(e.Message);
             }
-            foreach (string dir in Directory.GetDirectories(InstalledDir))
-            {
-                deleteDirectory(dir);
-            }
-            Directory.Delete(InstalledDir);
         }
-        //public async Task ProgressUpdate(IProgress<int> progress, string sourceDir, string destinationDir)
-        //{
-        //    // 1️⃣ 모든 하위 폴더 포함하여 파일 개수 계산
-        //    var files = Directory.GetFiles(sourceDir, "*.*", SearchOption.AllDirectories);
-        //    int total = files.Length; // 전체 파일 개수
-        //    int current = 0; // 현재 복사된 파일 개수
-
-        //    // 2️⃣ 대상 폴더 생성 (없으면 생성)
-        //    Directory.CreateDirectory(destinationDir);
-
-        //    // 3️⃣ 모든 파일 복사 + 진행률 업데이트
-        //    foreach (string file in files)
-        //    {
-        //        string relativePath = file.Substring(sourceDir.Length + 1); // 상대 경로 가져오기
-        //        string destFile = Path.Combine(destinationDir, relativePath);
-        //        string destFolder = Path.GetDirectoryName(destFile)!;
-
-        //        Directory.CreateDirectory(destFolder); // 파일이 속한 폴더가 없으면 생성
-
-        //        using (FileStream sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-        //        using (FileStream destinationStream = new FileStream(destFile, FileMode.Create, FileAccess.Write, FileShare.None))
-        //        {
-        //            await Task.Delay(1000);
-        //            try
-        //            {
-        //                byte[] bytes = new byte[32768];
-        //                int bytesRead;
-
-        //                while ((bytesRead = await sourceStream.ReadAsync(bytes, 0, bytes.Length)) > 0)
-        //                {
-        //                    await destinationStream.WriteAsync(bytes, 0, bytesRead);
-        //                }
-
-        //                // 4️⃣ 진행률 업데이트
-        //                progress.Report((int)(++current / (double)total * 100));
-        //            }
-        //            catch (IOException)
-        //            {
-        //                MessageBox.Show($"복사 실패: {file}");
-        //            }
-        //        }
-        //    }
-        //}
-
-        public async Task ProgressUpdate(IProgress<int> progress, string sourceDir, string destinationDir)
+        public async Task ProgramSetup(IProgress<int> progress, string sourceDir, string destinationDir, Action<bool> SetProgressBarVisibility)
+        // 설치
         {
+            SetProgressBarVisibility(true);
 
-            //progress.Report(File.count() / 100);
+            //  모든 하위 폴더 포함하여 파일 개수 계산
             var files = Directory.GetFiles(sourceDir, "*.*", SearchOption.AllDirectories);
-            // dl
-            int total = files.Length;
-            int current = 0;
-            //원본 파일 갯수
+            int total = files.Length; // 전체 파일 개수
+            int current = 0; // 현재 복사된 파일 개수
 
+            //  대상 폴더 생성 (없으면 생성)
             Directory.CreateDirectory(destinationDir);
-            //폴더 만들기 폴더가 있어서
 
-            foreach (string file in Directory.GetFiles(sourceDir))
-            //플더안 파일 이름 가져오기 
+            //  모든 파일 복사 + 진행률 업데이트
+            foreach (string file in files)
             {
-                string dest = Path.Combine(destinationDir, Path.GetFileName(file));
+                string relativePath = file.Substring(sourceDir.Length + 1); // 상대 경로 가져오기
+                string destFile = Path.Combine(destinationDir, relativePath);
+                string destFolder = Path.GetDirectoryName(destFile)!;
+
+                Directory.CreateDirectory(destFolder); // 파일이 속한 폴더가 없으면 생성
 
                 using (FileStream sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-                using (FileStream destinationStream = new FileStream(dest, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (FileStream destinationStream = new FileStream(destFile, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     await Task.Delay(1000);
                     try
@@ -345,24 +295,45 @@ namespace LauncherWPFUiTest.ViewModel
                         {
                             await destinationStream.WriteAsync(bytes, 0, bytesRead);
                         }
+
+                        //  진행률 업데이트
                         progress.Report((int)(++current / (double)total * 100));
 
                     }
                     catch (IOException)
                     {
-                        MessageBox.Show("복사 실패");
+                        MessageBox.Show($"복사 실패: {file}");
                     }
+
+
                 }
             }
-
-            foreach (string dir in Directory.GetDirectories(sourceDir))
-            {
-                string destDir = Path.Combine(destinationDir, Path.GetFileName(dir));
-                await ProgressUpdate(progress, dir, destDir);
-            }
-
-
+            SetProgressBarVisibility(false);
+            MessageBox.Show("aa");
+            //progress.Report(100);
         }
+
+
+        public async Task InstallProgram(IProgress<int> progress, string sourcePath, string programFolder, Action<bool> updateVisibility)
+        {
+            string fullInstallPath = GetInstallPath(programFolder, sourcePath);
+            await ProgramSetup(progress, sourcePath, fullInstallPath, updateVisibility);
+        }
+
+        //public async Task ProgressUpdate(IProgress<int> progress, string sourcePath, string fullInstallPath, Action<bool> updateVisibility)
+        //{
+        //    updateVisibility(true);
+
+        //    int totalFiles = 10; // 실제 파일 개수에 따라 변경 가능
+        //    for (int i = 0; i < totalFiles; i++)
+        //    {
+        //        await Task.Delay(500); // 예제 코드에서는 딜레이를 넣음 (실제 파일 복사 코드 필요)
+        //        progress.Report((int)((i + 1) / (double)totalFiles * 100));
+        //    }
+
+        //    updateVisibility(false);
+        //}
+
 
     }
 }

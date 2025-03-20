@@ -29,6 +29,9 @@ namespace LauncherWPFUiTest
         }
         FileCopyManager fileCopyManager = new FileCopyManager();
 
-
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("준비중");
+        }
     }
 }
