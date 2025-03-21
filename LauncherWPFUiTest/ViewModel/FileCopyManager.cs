@@ -72,7 +72,6 @@ namespace LauncherWPFUiTest.ViewModel
 
             //  런처 XML을 역직렬화하여 프로그램 폴더 경로 가져오기
             XmlSerializer launcherSerializer = new XmlSerializer(typeof(LauncherConfig));
-            //LauncherConfig launcherConfig;
             //if (launcherConfig == null)
 
                 using (StreamReader reader = new StreamReader(XmlFilePath))
