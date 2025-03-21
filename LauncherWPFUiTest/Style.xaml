@@ -16,7 +16,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="5"
+                    <Border CornerRadius="5, 0 , 0, 5"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
@@ -41,8 +41,6 @@
         </Style.Triggers>
     </Style>
 
-    
-    
     <Style x:Key="settingbutton"
            TargetType="Button">
         <Setter Property="ContextMenu">
@@ -68,7 +66,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="5"
+                    <Border CornerRadius="0,5 5 0"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
@@ -86,28 +84,50 @@
                         Value="White"></Setter>
             </Trigger>
 
-            <EventTrigger RoutedEvent="Click">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
-                                <DiscreteBooleanKeyFrame KeyTime="0:0:0"
-                                                         Value="True" />
-                            </BooleanAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
-            </EventTrigger>
         </Style.Triggers>
 
     </Style>
 
+    <Style x:Key="MainImage"
+           TargetType="Border">
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush ImageSource="Images/2075.jpg"
+                            Stretch="Fill" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="OpacityMask">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="1,1"
+                                     EndPoint="1,0">
+                    <GradientStop Offset="0"
+                                  Color="#000000" />
+                    <GradientStop Offset="1"
+                                  Color="#00000000" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--<Border.Background>
+        <ImageBrush Stretch="Fill"
+                    ImageSource="Images/2075.jpg" />
+    </Border.Background>
+    <Border.OpacityMask>
+        <LinearGradientBrush StartPoint="1,1"
+                             EndPoint="1,0">
+            <GradientStop Offset="0"
+                          Color="#000000" />
+            <GradientStop Offset="1"
+                          Color="#00000000" />
+        </LinearGradientBrush>
+    </Border.OpacityMask>-->
+
     <Style x:Key="menuButton"
            TargetType="Button">
         <Setter Property="Width"
-                Value="70" />
+                Value="64" />
         <Setter Property="Height"
-                Value="60" />
+                Value="64" />
         <Setter Property="HorizontalAlignment"
                 Value="Left" />
         <Setter Property="Background"
@@ -122,7 +142,7 @@
         <Setter Property="FontSize"
                 Value="13" />
         <Setter Property="Margin"
-                Value="3" />
+                Value="20 10 10 10" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -245,9 +265,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border>
+                        
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="Center"
-                                          Margin="10" />
+                                          Margin="10 15 10 10" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

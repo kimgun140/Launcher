@@ -10,20 +10,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\backgroundimg.jpg" />
-    <None Remove="Images\circle_user_icon.png" />
+    <None Remove="Images\2075.jpg" />
+    <None Remove="Images\asdfsadfsadf.png" />
     <None Remove="Images\diaicon.png" />
     <None Remove="Images\home_page.png" />
     <None Remove="Images\icon1.png" />
+    <None Remove="Images\icons8-settings-384.png" />
+    <None Remove="Images\icons8-settings-50.png" />
     <None Remove="Images\img_home.png" />
     <None Remove="Images\logologo.png" />
     <None Remove="Images\note.png" />
+    <None Remove="Images\pngimg.com - discord_PNG19.png" />
+    <None Remove="Images\Resize image project.png" />
     <None Remove="Images\s2icon.png" />
     <None Remove="Images\star2_logo.png" />
     <None Remove="Images\usericon2.png" />
     <None Remove="Images\user_icon.png" />
     <None Remove="Images\watchicon.png" />
     <None Remove="Images\wowicon.png" />
+    <None Remove="Images\—Pngtree—gear icon_4422407.png" />
+    <None Remove="Images\—Pngtree—settings icon_4419959.png" />
+    <None Remove="Images\다운로드 %281%29.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +38,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\2075.jpg" />
+    <Resource Include="Images\asdfsadfsadf.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\icons8-settings-384.png" />
+    <Resource Include="Images\icons8-settings-50.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\pngimg.com - discord_PNG19.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Resize image project.png" />
     <Resource Include="Images\usericon2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -49,11 +68,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\circle_user_icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\backgroundimg.jpg" />
     <Resource Include="Images\diaicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -76,6 +90,13 @@
     <Resource Include="Images\wowicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\—Pngtree—gear icon_4422407.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\—Pngtree—settings icon_4419959.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\다운로드 (1).png" />
   </ItemGroup>
 
   <ItemGroup>

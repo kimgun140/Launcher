@@ -1,5 +1,6 @@
 ﻿using LauncherWPFUiTest.Model;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -72,14 +73,16 @@ namespace LauncherWPFUiTest.ViewModel
             //  런처 XML을 역직렬화하여 프로그램 폴더 경로 가져오기
             XmlSerializer launcherSerializer = new XmlSerializer(typeof(LauncherConfig));
             //LauncherConfig launcherConfig;
+            //if (launcherConfig == null)
 
-            using (StreamReader reader = new StreamReader(XmlFilePath))
-            {
-                launcherConfig = (LauncherConfig)launcherSerializer.Deserialize(reader);
-            }
+                using (StreamReader reader = new StreamReader(XmlFilePath))
+                {
+                    launcherConfig = (LauncherConfig)launcherSerializer.Deserialize(reader);
+                }
 
             if (string.IsNullOrEmpty(launcherConfig.ProgramsFolder) || !Directory.Exists(launcherConfig.ProgramsFolder))
                 return new ObservableCollection<Program>();
+            // 예외 처리가 되어있네 재시도를 자동으로 하게 하는게 좋을 까 아니면 사용자에게 알림을 주고 재시작하게 하는게 좋을까 
 
             // 
             var programFolders = Directory.GetDirectories(launcherConfig.ProgramsFolder);
@@ -146,20 +149,60 @@ namespace LauncherWPFUiTest.ViewModel
             // 구조체 초기화해 경로 설정 
             int result = WNetAddConnection2(ref netResource, password, username, 0);
 
+
+            //연결 끊기 
+            //WNetCancelConnection2(path, 0, true);
+
             if (result == 0)// 0이면 연결 
             {
-
+                //Task.Delay(10000000);
                 MessageBox.Show("연결");
 
-                //WNetCancelConnection2(@"\\gms-mcc-nas01\AUDIO-FILE\test1", 0, true);
-                //연결해제 lpRemoteName 을 넣어주기  
-                //windows 네트워크 드라이브는 네트워크 공유 폴더 단위로 관리되므로, 연결을 해제할때 해당 공유폴더의 경로를 지정한다.
+
             }
             else
             {
 
                 MessageBox.Show(result.ToString());
             }
+        }
+
+        public void RunProgram(string programFolder, string versionPath)
+        {
+            const string exefile = "asdfsadf.exe";
+            // xml에서 읽어오거나 정해놓거나 
+            string installPath = GetInstallPath(programFolder, versionPath);
+
+            string exePath = Path.Combine(installPath, exefile);
+            if (!File.Exists(exePath))
+            {
+                MessageBox.Show("실행할 파일이 없습니다.");
+                return;
+            }
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = exePath,
+                    UseShellExecute = true,
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+
+            //ProcessStartInfo startInfo = new ProcessStartInfo
+            //{
+            //    FileName = exePath,
+            //    WorkingDirectory = installPath,
+            //    Arguments = " ",
+            //    ArgumentList = { " ", "" },
+            //    Verb = "runas"
+            //};
+            //Process.Start(exePath);
+
         }
         public void OptionBackup(string programFolder, string versionPath)
         {
@@ -172,16 +215,20 @@ namespace LauncherWPFUiTest.ViewModel
             // 원본 설정 파일 경로
             string sourceFilePath = Path.Combine(installPath, file);
 
-            // ❗ 백업 폴더는 ProgramA 폴더 안에 위치해야 함
+            //  백업 폴더는 ProgramA 폴더 안에 위치해야 함
             string programRootPath = Path.GetDirectoryName(installPath); // ProgramA 폴더 경로
             string backupFolder = Path.Combine(programRootPath, "백업폴더");
             Directory.CreateDirectory(backupFolder); // 폴더가 없으면 생성
 
-            // ❗ 버전명을 포함한 백업 파일명 생성
+            // 버전명을 포함한 백업 파일명 생성
             string versionFolderName = Path.GetFileName(versionPath); // 예: V1.0
             string backupFileName = $"ProgramSettings_{versionFolderName}.xml";
             string backupFilePath = Path.Combine(backupFolder, backupFileName);
-
+            if (!File.Exists(sourceFilePath))
+            {
+                MessageBox.Show("백업할 설정 파일이 없습니다.");
+                return;
+            }
             // 파일 복사
             using (FileStream sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (FileStream destinationStream = new FileStream(backupFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -229,13 +276,14 @@ namespace LauncherWPFUiTest.ViewModel
         //설치확인
         {
             string installPath = GetInstallPath(programFolder, versionPath);
+
             return Directory.Exists(installPath);
         }
 
 
         public async void deleteDirectory(string InstalledDir)
         {
-            
+
             //Task task = new Task(() => deleteDirectory(InstalledDir));
             try
             {
@@ -309,7 +357,7 @@ namespace LauncherWPFUiTest.ViewModel
                 }
             }
             SetProgressBarVisibility(false);
-            MessageBox.Show("aa");
+            MessageBox.Show("설치완료");
             //progress.Report(100);
         }
 
@@ -320,19 +368,6 @@ namespace LauncherWPFUiTest.ViewModel
             await ProgramSetup(progress, sourcePath, fullInstallPath, updateVisibility);
         }
 
-        //public async Task ProgressUpdate(IProgress<int> progress, string sourcePath, string fullInstallPath, Action<bool> updateVisibility)
-        //{
-        //    updateVisibility(true);
-
-        //    int totalFiles = 10; // 실제 파일 개수에 따라 변경 가능
-        //    for (int i = 0; i < totalFiles; i++)
-        //    {
-        //        await Task.Delay(500); // 예제 코드에서는 딜레이를 넣음 (실제 파일 복사 코드 필요)
-        //        progress.Report((int)((i + 1) / (double)totalFiles * 100));
-        //    }
-
-        //    updateVisibility(false);
-        //}
 
 
     }

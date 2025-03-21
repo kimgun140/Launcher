@@ -5,9 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LauncherWPFUiTest"
         xmlns:vm="clr-namespace:LauncherWPFUiTest.ViewModel"
-        
-       
-    
         mc:Ignorable="d"
         Title="MainWindow"
         Height="562.5"
@@ -27,6 +24,8 @@
     <Grid>
         <Border>
             <Border.Background>
+                <!--<ImageBrush ImageSource="/Images/asdfsadfsadf.png" />-->
+
                 <SolidColorBrush Color="#15171E" />
             </Border.Background>
             <Grid>
@@ -34,58 +33,61 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100" />
+                    <RowDefinition Height="120" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Column="0"
                       Grid.ColumnSpan="2">
-                    <ItemsControl ItemsSource="{Binding Programs}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button Style="{StaticResource menuButton}"
-                                        Command="{Binding DataContext.SelectProgramCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                        CommandParameter="{Binding}">
-                                    <StackPanel Orientation="Vertical">
-                                        <Image Source="{Binding IconSource}"
-                                               Height="60"
-                                               Width="60"
-                                               Margin="5" />
-                                        <TextBlock Text="{Binding ProgramName}"
-                                                   FontSize="12" />
-                                    </StackPanel>
-                                </Button>
+                    <Border CornerRadius="5"
+                            Background="#10FFFFFF"
+                            Margin="20">
 
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                   
+                        <StackPanel VerticalAlignment="Center">
+                            <ItemsControl ItemsSource="{Binding Programs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource menuButton}"
+                                                Command="{Binding DataContext.SelectProgramCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Vertical">
+                                                <Image Source="{Binding IconSource}" />
+                                                <TextBlock Text="{Binding ProgramName}"
+                                                           FontSize="12" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+                    </Border>
                 </Grid>
                 <DockPanel Grid.Row="1"
                            Grid.Column="0"
                            Background="Transparent"
                            Width="200"
-                           HorizontalAlignment="Left">
+                           HorizontalAlignment="Left"
+                           Margin="15 0 0 0">
                     <Image DockPanel.Dock="Top"
-                           Margin="5 10 0 0"
-                           Source="Images/logologo.png"></Image>
+                           Margin="10 10 0 0"
+                           Source="Images/Resize image project.png"></Image>
                     <Button Style="{StaticResource BtnContent}"
-                            Content="스타크래프트 샵" 
-                            Click="Button_Click"/>
+                            Content="런처 샵"
+                            Click="Button_Click" />
                     <Button Style="{StaticResource BtnContent}"
-                            Content="토론장" 
-                            Click="Button_Click"/>
+                            Content="토론장"
+                            Click="Button_Click" />
                     <Button  Style="{StaticResource BtnContent}"
-                             Content="패치노트" 
-                             Click="Button_Click"/>
+                             Content="패치노트"
+                             Click="Button_Click" />
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -93,11 +95,11 @@
                         </Grid.RowDefinitions>
                         <Button DockPanel.Dock="Bottom"
                                 Grid.Row="1"
-                                Height="60"
+                                Height="50"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Left"
-                                Margin="5 10 0 40"
-                                Width="150"
+                                Margin="0 10 0 40"
+                                Width="160"
                                 Background="#0074E0"
                                 Foreground="White"
                                 Content="{Binding ButtonContent}"
@@ -110,32 +112,27 @@
                                 HorizontalAlignment="Right"
                                 Grid.Row="1"
                                 Width="50"
-                                Height="60"
-                                Margin="0 10 0 40"
+                                Height="50"
+                                Margin="20 10 0 40"
                                 Style="{StaticResource settingbutton}"
                                 Background="#0074E0"
                                 Foreground="White"
-                                VerticalAlignment="Bottom"
-                                Content="설정"
-                               
-                                
-                                
-                                >
-
-
-                            <Button.ContextMenu >
+                                VerticalAlignment="Bottom">
+                            <StackPanel>
+                                <Image Source="Images/icons8-settings-50.png"
+                                       Width=" 30" />
+                            </StackPanel>
+                            <Button.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Settings"
                                               Click="Button_Click" />
                                     <MenuItem Header="Delete"
-                                              
                                               Command="{Binding DeleteProgramCommand}"
                                               IsEnabled="{Binding Flag}" />
                                     <MenuItem Header="리페어"
                                               Command="{Binding RepairProgramCommand }" />
                                     <MenuItem Header="설정백업"
-                                              Command="{Binding backupCommand}"
-                                              />
+                                              Command="{Binding backupCommand}" />
 
                                 </ContextMenu>
                             </Button.ContextMenu>
@@ -146,7 +143,7 @@
                                      DockPanel.Dock="Bottom"
                                      Height="20"
                                      VerticalAlignment="Bottom"
-                                     Margin="5 10 0 10"
+                                     Margin="0 10 0 10"
                                      Value="{Binding ProgressBarValue}"
                                      Maximum="100"
                                      Visibility="{Binding ProgressBarVisibility, Converter={StaticResource boolToVisibilityConverter}}" />
@@ -160,42 +157,63 @@
                               DockPanel.Dock="Bottom"
                               Height="30"
                               VerticalAlignment="Bottom"
-                              Margin="5 10 0 0"
+                              Margin="  0"
+                              FontSize="20"
                               FontFamily="pack://application:,,,/Font/NanumGothic.ttf">
 
                     </ComboBox>
 
                 </DockPanel>
-                <StackPanel Grid.Row="1"
+
+                    <StackPanel Grid.Row="1"
                             HorizontalAlignment="Right"
-                            Background="#23252B"
                             Margin="0 0 20 20"
                             
-                            >
-                    <Button Style="{StaticResource startbtn}"
-                            Margin="5 10 0 40"
-                            Content="ㅂ"
-                            Width="150"
-                            Background="#0074E0"
-                            Foreground="White"
-                            Height="    60"
-                            Command="{Binding backupCommand}"
-                            ></Button>
-                    <Image Source="{Binding SelectedProgram.IconSource}"
-                           Height="200"
-                           Width="600"
-                           Margin="10" />
-                    <TextBlock Grid.Row="1"
+                                >
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                                  HorizontalScrollBarVisibility="Hidden"
+                                  CanContentScroll="True"
+                                
+                                  MaxHeight="400">
+                        <StackPanel>
+                        <Border CornerRadius="8,8,8,8"
+                            ClipToBounds="True"
+                            Width="600"
+                            Height="200">
+                        <Border.Background>
+                            <ImageBrush Stretch="Fill"
+                                        ImageSource="Images/2075.jpg" />
+                        </Border.Background>
+                        <Border.OpacityMask>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Offset="0.2"
+                                              Color="#000000" />
+                                <GradientStop Offset="1"
+                                              Color="#00000000" />
+                            </LinearGradientBrush>
+                        </Border.OpacityMask>
+                            
+                    </Border>
+
+                        <TextBlock Grid.Row="1"
                                HorizontalAlignment="Right"
                                Background="Transparent"
-                               Foreground="White"
+                               Foreground="DarkGray"
                                Text="{Binding PatchNote}"
+                               FontFamily="pack://application:,,,/Font/NanumGothic.ttf"
+                               FontWeight="Bold"
+                               FontSize="16"
                                Width="600"
                                Margin="10"
-                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                               ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-
+                               LineHeight="30"
+                      
+                               
+                              >
+                               
                     </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
 

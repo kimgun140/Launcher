@@ -18,15 +18,17 @@ namespace LauncherWPFUiTest
     /// </summary>
     public partial class MainWindow : Window
     {
+        FileCopyManager fileCopyManager = new FileCopyManager();
+
         public MainWindow()
         {
             InitializeComponent();
             //DataContext = new ItemViewModel();
             DataContext = new MainViewModel();
+
             fileCopyManager.Connection();
 
         }
-        FileCopyManager fileCopyManager = new FileCopyManager();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
